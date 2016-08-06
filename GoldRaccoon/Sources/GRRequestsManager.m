@@ -14,7 +14,7 @@
 #import "GRUploadRequest.h"
 #import "GRDownloadRequest.h"
 #import "GRDeleteRequest.h"
-
+#import "GRFileInfo.h"
 #import "GRQueue.h"
 
 @interface GRRequestsManager () <GRRequestDelegate, GRRequestDataSource>
@@ -148,7 +148,7 @@
     if ([request isKindOfClass:[GRListingRequest class]]) {
         NSMutableArray *listing = [NSMutableArray array];
         for (NSDictionary *file in ((GRListingRequest *)request).filesInfo) {
-            [listing addObject:[file objectForKey:(id)kCFFTPResourceName]];
+            [listing addObject:[[GRFileInfo alloc] initWithDictionary:file]];
         }
         if ([self.delegate respondsToSelector:@selector(requestsManager:didCompleteListingRequest:listing:)]) {
             [self.delegate requestsManager:self

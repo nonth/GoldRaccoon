@@ -8,6 +8,7 @@
 
 #import "GRDemoViewController.h"
 #import "GRRequestsManager.h"
+#import "GRFileInfo.h"
 
 @interface GRDemoViewController () <GRRequestsManagerDelegate, UITextFieldDelegate>
 
@@ -100,7 +101,10 @@
 
 - (void)requestsManager:(id<GRRequestsManagerProtocol>)requestsManager didCompleteListingRequest:(id<GRRequestProtocol>)request listing:(NSArray *)listing
 {
-    NSLog(@"requestsManager:didCompleteListingRequest:listing: \n%@", listing);
+    NSLog(@"requestsManager:didCompleteListingRequest:listing:");
+    for (GRFileInfo *fileInfo in listing) {
+        NSLog(@"%@ - size %i bytes - modified date: %@ - folder: %@", fileInfo.name, [fileInfo.size intValue], fileInfo.modifiedDate, ((fileInfo.isFolder) ? @"YES" : @"NO"));
+    }
 }
 
 - (void)requestsManager:(id<GRRequestsManagerProtocol>)requestsManager didCompleteCreateDirectoryRequest:(id<GRRequestProtocol>)request
