@@ -31,7 +31,15 @@
 
 - (void)parseMetadata:(NSDictionary* )metadata
 {
-    self.name = [metadata objectForKey:(id)kCFFTPResourceName];
+    NSString *name = [metadata objectForKey:(id)kCFFTPResourceName];
+    
+    if ([name canBeConvertedToEncoding:NSMacOSRomanStringEncoding]) {
+        NSData *data = [name dataUsingEncoding:NSMacOSRomanStringEncoding allowLossyConversion:YES];
+        self.name = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    } else {
+        self.name = [metadata objectForKey:(id)kCFFTPResourceName];
+    }
+    
     self.modifiedDate = [metadata objectForKey:(id)kCFFTPResourceModDate];
     self.size = [metadata objectForKey:(id)kCFFTPResourceSize];
     NSNumber *type = [metadata objectForKey:(id)kCFFTPResourceType];
